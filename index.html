@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Gaurav ❤️ Bella</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+html,body{width:100%;height:100%;overflow:hidden;}
+
+body{
+    background:url('https://i.supaimg.com/1a09bb1d-05de-4340-aa67-b0e5268f2d27.jpg') center/cover no-repeat;
+}
+
+/* LOGIN */
+#loginBox{
+    position:absolute;top:50%;left:50%;
+    transform:translate(-50%,-50%);
+    background:rgba(255,255,255,0.95);
+    padding:30px;border-radius:20px;
+    text-align:center;z-index:50;
+}
+#loginBox input{
+    padding:12px;border-radius:10px;border:1px solid #ccc;
+}
+#loginBox button{
+    margin-top:10px;padding:10px 25px;
+    background:#ff3366;color:white;
+    border:none;border-radius:20px;font-size:16px;
+}
+
+/* MAIN */
+#loveBox{display:none;width:100%;height:100%;position:relative;color:white;}
+
+#names{
+    position:absolute;top:28%;left:50%;
+    transform:translateX(-50%);
+    font-size:48px;
+    text-shadow:0 0 20px red;
+}
+
+#typeText{
+    position:absolute;top:45%;left:50%;
+    transform:translateX(-50%);
+    font-size:28px;
+    text-align:center;
+    width:85%;
+    text-shadow:0 0 10px pink;
+}
+
+/* ROSE PETALS */
+.petal{
+    position:absolute;
+    font-size:24px;
+    animation:fall linear infinite;
+}
+@keyframes fall{
+    0%{transform:translateY(-10vh) rotate(0deg);opacity:1;}
+    100%{transform:translateY(110vh) rotate(360deg);opacity:0;}
+}
+
+/* PROPOSAL */
+#proposal{
+    position:fixed;
+    top:50%;left:50%;
+    transform:translate(-50%,-50%) scale(0);
+    background:rgba(255,255,255,0.95);
+    padding:30px 40px;
+    border-radius:30px;
+    text-align:center;
+    font-size:26px;
+    color:#ff3366;
+    box-shadow:0 0 40px pink;
+    z-index:40;
+    transition:0.8s;
+}
+#proposal.show{
+    transform:translate(-50%,-50%) scale(1);
+}
+
+/* FIREWORKS */
+.firework{
+    position:fixed;
+    font-size:26px;
+    animation:burst 2s ease-out forwards;
+    pointer-events:none;
+}
+@keyframes burst{
+    0%{transform:scale(0);opacity:1;}
+    100%{transform:translate(var(--x),var(--y)) scale(1.8);opacity:0;}
+}
+
+/* POPUP */
+#popup{
+    position:fixed;
+    bottom:20px;
+    left:50%;
+    transform:translateX(-50%);
+    background:rgba(255,255,255,0.9);
+    padding:12px 25px;
+    border-radius:20px;
+    color:#ff3366;
+    font-size:18px;
+    opacity:0;
+    transition:1s;
+    z-index:60;
+}
+#popup.show{opacity:1;}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div id="loginBox">
+    <h2>🔒 Enter Password</h2>
+    <input type="password" id="password" placeholder="Password">
+    <br>
+    <button onclick="unlock()">Unlock ❤️</button>
+    <p id="error" style="color:red;"></p>
+</div>
+
+<!-- MAIN -->
+<div id="loveBox">
+    <div id="names">Gaurav ❤️ Bella</div>
+    <div id="typeText"></div>
+</div>
+
+<!-- PROPOSAL -->
+<div id="proposal">
+    💍 Bella 💖<br>
+    Will you be mine forever? 🌹
+</div>
+
+<!-- POPUP -->
+<div id="popup">💖 Love is in the air 💖</div>
+
+<!-- MUSIC (ADD music.mp3 IN SAME FOLDER) -->
+<audio id="bgMusic" loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const message = "I love you more than words can say 💖 You are my heart, my soul, my forever 🌹";
+let index = 0;
+let musicInterval;
+
+/* UNLOCK */
+function unlock(){
+    if(password.value==="love"){
+        loginBox.style.display="none";
+        loveBox.style.display="block";
+        fadeInMusic();
+        showPopup();
+        typeWriter();
+        roseRain();
+        setTimeout(showProposal,8000);
+        setTimeout(finaleFireworks,13000);
+    } else {
+        error.innerText="Wrong Password 💔";
+    }
+}
+
+/* SOFT MUSIC FADE */
+function fadeInMusic(){
+    const music=document.getElementById("bgMusic");
+    music.volume=0;
+    music.play();
+    let v=0;
+    musicInterval=setInterval(()=>{
+        if(v<1){
+            v+=0.02;
+            music.volume=v;
+        }else{
+            clearInterval(musicInterval);
+        }
+    },200);
+}
+
+/* TYPEWRITER */
+function typeWriter(){
+    if(index<message.length){
+        typeText.innerHTML+=message.charAt(index);
+        index++;
+        setTimeout(typeWriter,80);
+    }
+}
+
+/* ROSE PETALS */
+function roseRain(){
+    setInterval(()=>{
+        const petal=document.createElement("div");
+        petal.className="petal";
+        petal.innerText="🌹";
+        petal.style.left=Math.random()*100+"vw";
+        petal.style.animationDuration=(4+Math.random()*4)+"s";
+        document.body.appendChild(petal);
+        setTimeout(()=>petal.remove(),8000);
+    },180);
+}
+
+/* POPUP */
+function showPopup(){
+    popup.classList.add("show");
+    setTimeout(()=>popup.classList.remove("show"),4000);
+}
+
+/* PROPOSAL */
+function showProposal(){
+    proposal.classList.add("show");
+    setTimeout(()=>proposal.classList.remove("show"),5000);
+}
+
+/* HEART + LOTUS FIREWORKS */
+function finaleFireworks(){
+    setInterval(()=>{
+        for(let i=0;i<40;i++){
+            const f=document.createElement("div");
+            f.className="firework";
+            f.innerText=Math.random()>0.5?"❤️":"🪷";
+            f.style.left="50vw";
+            f.style.top="50vh";
+            f.style.setProperty("--x",(Math.random()*800-400)+"px");
+            f.style.setProperty("--y",(Math.random()*800-400)+"px");
+            document.body.appendChild(f);
+            setTimeout(()=>f.remove(),2000);
+        }
+    },3000);
+}
+</script>
+
+</body>
+</html>
